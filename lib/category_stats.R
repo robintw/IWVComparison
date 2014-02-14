@@ -38,8 +38,6 @@ make_into_factors <- function(col, l)
   return(col)
 }
 
-
-
 calculate_category_stats_aeronet <- function(mlist)
 {  
   # Calculate indices for each of the selection criteria
