@@ -83,7 +83,7 @@ calculate_category_stats_aeronet <- function(mlist)
   r <- as.data.frame(as.matrix(r))
   
   r <- as.data.frame(sapply(r, as.numeric))
-
+  
   r$set <- make_into_factors(r$set, sets)
   r$cat_excl <- make_into_factors(r$cat_excl, cat_excluded)
   
@@ -112,12 +112,12 @@ calculate_category_stats_radiosonde <- function(mlist)
   
   radiosonde_types = list(Any = 1:nrow(ClassifiedValRadiosonde),
                           RS92 = which(ClassifiedValRadiosonde$rtype == 79 |
-                                       ClassifiedValRadiosonde$rtype == 80 |
-                                       ClassifiedValRadiosonde$rtype == 81),
+                                         ClassifiedValRadiosonde$rtype == 80 |
+                                         ClassifiedValRadiosonde$rtype == 81),
                           OthersNoRS80 = which(ClassifiedValRadiosonde$rtype != 79 &
-                                               ClassifiedValRadiosonde$rtype != 80 &
-                                               ClassifiedValRadiosonde$rtype != 81 &
-                                               ClassifiedValRadiosonde$rtype != 52))
+                                                 ClassifiedValRadiosonde$rtype != 80 &
+                                                 ClassifiedValRadiosonde$rtype != 81 &
+                                                 ClassifiedValRadiosonde$rtype != 52))
   
   results = list()
   listind = 1
@@ -192,7 +192,8 @@ get_stats_ar <- function(df, ind, mlist, col)
 }
 
 calculate_category_stats_ar <- function(mlist)
-{  
+{
+  
   # Calculate indices for each of the selection criteria
   sets = list(All     = 1:nrow(ClassifiedValAR),
               UK      = which(ClassifiedValAR$UK == 1),
@@ -200,12 +201,23 @@ calculate_category_stats_ar <- function(mlist)
               Global  = which(ClassifiedValAR$Global == 1))
   
   cat_excluded = list(None =  1:nrow(ClassifiedValAR),
-                      Any  =  which(ClassifiedValAR$Category3_SmallIsland_LargeOceanMass == 0 &
+                      Any  =  which(ClassifiedValAR$Category1_SmallIsland == 0 &
+                                      ClassifiedValAR$Category2_SeparatedLandMass == 0 &
+                                      ClassifiedValAR$Category3_SmallIsland_LargeOceanMass == 0 &
                                       ClassifiedValAR$Category4_SeparatedLargerIsland == 0 &
                                       ClassifiedValAR$Category5_FewSamples == 0),
-                      SmallAndFew = which(ClassifiedValAR$Category3_SmallIsland_LargeOceanMass == 0 &
+                      SmallAndFew = which(ClassifiedValAR$Category1_SmallIsland == 0 &
+                                            ClassifiedValAR$Category3_SmallIsland_LargeOceanMass == 0 &
                                             ClassifiedValAR$Category5_FewSamples == 0))
   
+  radiosonde_types = list(Any = 1:nrow(ClassifiedValAR),
+                          RS92 = which(ClassifiedValAR$rtype == 79 |
+                                         ClassifiedValAR$rtype == 80 |
+                                         ClassifiedValAR$rtype == 81),
+                          OthersNoRS80 = which(ClassifiedValAR$rtype != 79 &
+                                                 ClassifiedValAR$rtype != 80 &
+                                                 ClassifiedValAR$rtype != 81 &
+                                                 ClassifiedValAR$rtype != 52))
   
   results = list()
   listind = 1
@@ -214,18 +226,22 @@ calculate_category_stats_ar <- function(mlist)
   {
     for (j in 1:length(cat_excluded))
     {
-      ind = intersect(unlist(sets[i]), unlist(cat_excluded[j]))
-      ind <- unlist(ind)
-      
-      res <- get_stats_ar(ClassifiedValAR, ind, mlist, 'PWC')
-      
-      res <- c(set = i,
-               cat_excl = j,
-               res)
-      
-      results[[listind]] <- res
-      listind = listind + 1
-      
+      for (k in 1:length(radiosonde_types))
+      {
+        ind <- intersect(unlist(sets[i]), unlist(cat_excluded[j]))
+        ind <- intersect(ind, unlist(radiosonde_types[k]))
+        ind <- unlist(ind)
+        
+        res <- get_stats_ar(ClassifiedValAR, ind, mlist, 'PWC')
+        
+        res <- c(set = i,
+                 cat_excl = j,
+                 radiosonde_types = k,
+                 res)
+        
+        results[[listind]] <- res
+        listind = listind + 1
+      }
     }
   }
   
@@ -234,8 +250,10 @@ calculate_category_stats_ar <- function(mlist)
   
   r <- as.data.frame(sapply(r, as.numeric))
   
+  
   r$set <- make_into_factors(r$set, sets)
   r$cat_excl <- make_into_factors(r$cat_excl, cat_excluded)
+  r$radiosonde_types <- make_into_factors(r$radiosonde_types, radiosonde_types)
   
   return(r)
 }
