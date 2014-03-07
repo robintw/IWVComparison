@@ -1,7 +1,5 @@
 locs <- get_aeronet_radiosonde_matches()
 
-#locs <- mar
-
 locs$n <- rep(NA, nrow(locs))
 locs$rmse <- rep(NA, nrow(locs))
 locs$corr <- rep(NA, nrow(locs))
@@ -20,12 +18,14 @@ for (i in 1:nrow(locs))
   l <- locs[i,]
   
   print(paste("###### Running validation for", l$aeronet, "and", l$radiosonde))
-  m.temp <- aeronet_radiosonde_merge(l$aeronet, l$radiosonde)  
-  if (is.na(m.temp[1]) && length(m.temp) == 1)
+  m.temp <- aeronet_radiosonde_merge(l$aeronet, l$radiosonde)
+  # Mark all stats as NA for any time that m.temp is NA (ie. fails)
+  # or the length of m.temp is < 3 (ie. v few coincident measurements,
+  # too few to do stats on)
+  if ((is.na(m.temp[1]) && length(m.temp) == 1) || nrow(m.temp) < 3)
   {
     locs[i,]$rmse <- NA
     locs[i,]$m <- NA
-    #locs[i,]$c <- NA
     locs[i,]$corr <- NA
     locs[i,]$r2 <- NA
     locs[i,]$n <- NA
@@ -33,7 +33,6 @@ for (i in 1:nrow(locs))
     locs[i,]$e_sd <- NA
     locs[i,]$perc_e_mean <- NA
     locs[i,]$perc_e_sd <- NA
-    
   }
   else
   {
@@ -43,7 +42,6 @@ for (i in 1:nrow(locs))
     locs[i,]$rmse <- rmse(m.temp$error)
     model <- lm(m.temp$pwc ~ m.temp$PWC + 0)
     locs[i,]$m <- model$coefficients[1]
-    #locs[i,]$c <- model$coefficients[1]
     locs[i,]$r2 <- summary(model)$r.squared
     locs[i,]$e_mean <- mean(m.temp$error)
     locs[i,]$e_sd <- sd(m.temp$error)
@@ -56,8 +54,20 @@ for (i in 1:nrow(locs))
     
     # Old code from before 1st Sept
     #mlist.radiosonde[[bigf_names[1]]] = m.temp
-    mlist.ar[[l$radiosonde]] = m.temp
     
+    # New code to deal with collisions between
+    # stations with the same names
+    element_name = l$radiosonde
+    index = 1
+    while (element_name %in% names(mlist.ar))
+    {
+      element_name = paste(l$radiosonde, "_", index, sep="")
+      print(paste("In while loop:", element_name))
+      index = index + 1
+    }
+
+    mlist.ar[[element_name]] = m.temp
+
     #browser()
   }
   
@@ -75,6 +85,6 @@ l <- lapply(mlist.ar, coredata)
 m.ar <- do.call('rbind', l)
 m.ar <- as.data.frame(m.ar)
 
-cache('val.ar')
-cache('m.ar')
-cache('mlist.ar')
+#cache('val.ar')
+#cache('m.ar')
+#cache('mlist.ar')
