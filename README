@@ -1,8 +1,0 @@
-This repository contains all of the code for reproducible the results of the BIGF Integrated Water Vapour validation part of XXX (paper reference here).
-
-To get going with reproducing the results:
-1. load a recent version of R (I suggest you use RStudio to make it easier)
-2. Change the directory to the location of your cloned version of this repository
-3. Run ``source('go.r')``
-4. You should find that the validation calculation process starts. This may take some time to complete.
-5. Run individual files in the 'src' folder to obtain the specific results shown in the paper
