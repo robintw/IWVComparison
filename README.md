@@ -57,15 +57,15 @@ The following data is provided in this repository, in the `data` folder:
 ### Data not provided
 
 #### AERONET
-Level 2.0 AERONET data was used, downloaded from the AERONET website. To download for reproducing the analysis, choose **TODO**
+Level 2.0 AERONET data was used, downloaded from the AERONET website. To download for reproducing the analysis, choose _Download All Sites_  under _AEROSOL OPTICAL DEPTH (V2)_ on the left-hand side, and then choose the _Level 2.0 AOD_ _All Points_ link (the top link on the page, at the time of writing).
 
 Extract this file to the `data/AERONET` folder.
 
 #### GPS
-GPS IWV estimates produced by the British Isles continuous GNSS Facility (BIGF) were provided by Richard Bingley and Dionne Hansen at the BIGF. To acquire this data, please contact the BIGF at **TODO**. The list of files which must be acquired are provided in `data/BIGF/list_of_files.txt`, and all files should be placed in the `data/BIGF`  folder.
+GPS IWV estimates produced by the British Isles continuous GNSS Facility (BIGF) were provided by Richard Bingley and Dionne Hansen at the BIGF. To acquire this data, please contact the BIGF as listed [on their website](http://bigf.ac.uk/staff_contact). The list of files which must be acquired are provided in `data/BIGF/list_of_files.txt`, and all files should be placed in the `data/BIGF`  folder.
 
 #### RadiosondeMetO
-Radiosonde data is provided by the UK Met Office via the British Atmospheric Data Centre (BADC). To acquire this data you must create a BADC account and request access to the data - see **TODO** for details.
+Radiosonde data is provided by the UK Met Office via the British Atmospheric Data Centre ([BADC](http://badc.nerc.ac.uk/)). To acquire this data you must create a BADC account and request access to the data - see [the BADC registration page](https://services.ceda.ac.uk/cedasite/register/info/) for details.
 
 Once you have access to the dataset via BADC, you can download via FTP. Simply connect to `ftp://ftp.ceda.ac.uk/badc/ukmo-rad/data/` using your BADC username and password, and download the folders listed in `downloads_needed.txt`. An easy way to do this if you're using OS X or Linux is to fill in your username and password in `download_ftp.sh` and then run `./download_ftp.sh`.
 
@@ -74,5 +74,6 @@ In general the code is well-commented and should be relatively self-explanatory.
 
 1. Reading the `ProjectTemplate` [documentation](blah) is recommended. This will explain how all of the various code files fit together. In brief: all of the files in `lib` are sourced when `load.project()` is run, and this means that _all_ of these functions are available to run from any other file in the project. The files in `src` are run manually to perform specific analyses.
 2. The actual comparison itself (data loading and temporal/spatial matching) is performed by the `.R` files in the `data` folder.
-3. This work originally started as a detailed validation of the GPS data, so if only one 'side' of the comparison is mentioned then the other 'side' is GPS. For example, the file `run_aeronet_validations.r` will actually run a comparison between AERONET and GPS data.
-4. Abbreviations that are used in the paper are also used in the code - for example: `AR` for AERONET-Radiosonde comparison.
+3. The comparison process produces various temporary datasets with slightly strange names. `mlist.X` (where `X` is a comparison like `aeronet`, `radiosonde` or `ar`) is a _list_ of merged dataframes. Each entry in the list (keyed by station name) contains all of the merged observations for that comparison. `m.X` is basically a `concat` of the above list - ie. all observations put together. Having both of these allows efficient calculation of both overall and site-specific statistics. `val.X` is the final validation statistics for that particular comparison, on a site level.
+4. This work originally started as a detailed validation of the GPS data, so if only one 'side' of the comparison is mentioned then the other 'side' is GPS. For example, the file `run_aeronet_validations.r` will actually run a comparison between AERONET and GPS data.
+5. Abbreviations that are used in the paper are also used in the code - for example: `AR` for AERONET-Radiosonde comparison.
