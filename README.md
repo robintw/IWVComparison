@@ -64,10 +64,10 @@ Extract this file to the `data/AERONET` folder.
 #### GPS
 GPS IWV estimates produced by the British Isles continuous GNSS Facility (BIGF) were provided by Richard Bingley and Dionne Hansen at the BIGF. To acquire this data, please contact the BIGF as listed [on their website](http://bigf.ac.uk/staff_contact). The list of files which must be acquired are provided in `data/BIGF/list_of_files.txt`, and all files should be placed in the `data/BIGF`  folder.
 
-#### RadiosondeMetO
+#### Radiosonde
 Radiosonde data is provided by the UK Met Office via the British Atmospheric Data Centre ([BADC](http://badc.nerc.ac.uk/)). To acquire this data you must create a BADC account and request access to the data - see [the BADC registration page](https://services.ceda.ac.uk/cedasite/register/info/) for details.
 
-Once you have access to the dataset via BADC, you can download via FTP. Simply connect to `ftp://ftp.ceda.ac.uk/badc/ukmo-rad/data/` using your BADC username and password, and download the folders listed in `downloads_needed.txt`. An easy way to do this if you're using OS X or Linux is to fill in your username and password in `download_ftp.sh` and then run `./download_ftp.sh`.
+Once you have access to the dataset via BADC, you can download via FTP. Simply connect to `ftp://ftp.ceda.ac.uk/badc/ukmo-rad/data/` using your BADC username and password, and download the folders listed in `data/RadiosondeMetO/downloads_needed.txt`. An easy way to do this if you're using OS X or Linux is to fill in your username and password in `download_ftp.sh` and then run `./download_ftp.sh`. Regardless how you obtain the data, you should ensure the site folders (eg. `camborne`) are directly underneath the `data/RadiosondeMetO` folder.
 
 ## Code structure
 In general the code is well-commented and should be relatively self-explanatory. However, the following notes/tips may be useful:
