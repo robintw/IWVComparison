@@ -4,7 +4,7 @@
 
 for (i in 3:length(mlist.radiosonde)-1)
 {
-  extracted <- mlist.radiosonde[[i]]$error/mlist.radiosonde[[i]]$iwv
+  extracted <- abs(mlist.radiosonde[[i]]$error/mlist.radiosonde[[i]]$iwv)
   if (length(extracted) < 365)
   {
     print(paste("Skipped", names(mlist.radiosonde)[i], length(extracted)))
