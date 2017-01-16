@@ -1,5 +1,5 @@
 # Examines dependence of RMSE on distance to nearest Met Station
-gps_met <- read.csv('data/gps_met.csv')
+gps_met <- read.csv('data/Locations/gps_met.csv')
 
 
 # AERONET sites
