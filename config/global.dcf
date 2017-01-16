@@ -3,10 +3,9 @@ cache_loading: TRUE
 munging: TRUE
 logging: FALSE
 load_libraries: TRUE
-libraries: lubridate, chron, zoo, xts, Bolstad, xtable, quantmod,
-        stringr, R.utils, sp
+libraries: lubridate, chron, zoo, xts, Bolstad, xtable, quantmod, stringr, R.utils, sp
 as_factors: FALSE
 data_tables: FALSE
-version: 0.6
+version: 0.7
 recursive_loading: FALSE
 attach_internal_libraries: TRUE
