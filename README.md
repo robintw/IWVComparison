@@ -2,7 +2,7 @@
 
 This repository contains all of the code used to produce the comparisons shown in the paper _A global comparison of integrated water vapour estimates from WMO radiosondes, AERONET sun photometers and GPS for the 17 year period from 1997 to 2013_ by Wilson, Hansen, Bingley and Milton.
 
-The code is written in the R programming language, and has been tested with v3.3.2. It uses the [ProjectTemplate library](http://projecttemplate.net/) as a framework to enable easy reproducibility.
+The code is written in the R programming language, and has been tested with v3.3.2. It uses the [ProjectTemplate library](http://projecttemplate.net/) as a framework to enable easy reproducibility. The code is licensed for use under the MIT license - but if you use it in an academic project then we would appreciate you citing the above paper. 
 
 ## Quickstart
 To go from nothing to a situation where you can run the individual analyses used in the paper, follow the steps below:
